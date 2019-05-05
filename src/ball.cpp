@@ -1,3 +1,9 @@
+/** ball.cpp
+ *
+ * Ball object.
+ * 
+ */
+
 #include "gamepiece.h"
 #include "ball.h"
 

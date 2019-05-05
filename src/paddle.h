@@ -1,3 +1,10 @@
+/** paddle.h
+ *
+ * Paddle object. When the ball object collides, the ball should
+ * bounce back.
+ * 
+ */
+
 #ifndef PADDLE_H
 #define PADDLE_H
 

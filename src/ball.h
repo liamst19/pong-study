@@ -1,3 +1,9 @@
+/** ball.h
+ *
+ * Ball object.
+ * 
+ */
+
 #ifndef BALL_H
 #define BALL_H
 

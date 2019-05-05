@@ -1,3 +1,10 @@
+/** paddle.cpp
+ *
+ * Paddle object. When the ball object collides, the ball should
+ * bounce back.
+ * 
+ */
+
 #include "gamepiece.h"
 #include "paddle.h"
 

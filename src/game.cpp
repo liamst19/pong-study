@@ -1,3 +1,13 @@
+/** game.cpp
+ *
+ * Entry point for the game.
+ *
+ * TODO: try to see if I can meaningfully separate out output
+ * processes, so that it may be possible, if need arises, to use
+ * libraries other than SDL.
+ * 
+ */
+
 #include <SDL2/SDL.h>
 #include "game.h"
 #include "gamepiece.h"

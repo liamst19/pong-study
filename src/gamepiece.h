@@ -1,9 +1,15 @@
+/** gamepiece.h
+ *
+ * Base class for the game objects that are to be rendered.
+ *
+ */
+
 #ifndef GAMEPIECE_H
 #define GAMEPIECE_H
 
 class GamePiece{
 
- public:
+public:
 
   GamePiece(int x, int y, int w, int h):
     xPosition(x),
@@ -18,6 +24,8 @@ class GamePiece{
   virtual int getY() { return yPosition; };
   virtual int getWidth() { return width; };
   virtual int getHeight() { return height; };
+
+protected:
 
   int xPosition, yPosition;
   int width, height;
