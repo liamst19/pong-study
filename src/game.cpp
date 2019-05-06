@@ -8,6 +8,7 @@
  * 
  */
 
+#include <vector>
 #include <SDL2/SDL.h>
 #include "game.h"
 #include "gamepiece.h"
@@ -15,8 +16,12 @@
 #include "ball.h"
 #include "paddle.h"
 
-// PUBLIC
+// PUBLIC -----------------------------------------------------
 
+/*
+ *
+ *
+ */
 bool Game::initialize(){
   
   int sdlResult = SDL_Init(SDL_INIT_VIDEO);
@@ -43,10 +48,17 @@ bool Game::initialize(){
          -1,
          SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC
   );
+
+  // Initialize Game Pieces
+  generateGamePieces();
   
   return true;
 }
 
+/*
+ *
+ *
+ */
 void Game::runLoop(){
   while(mIsRunning){
     processInput();
@@ -55,14 +67,25 @@ void Game::runLoop(){
   };
 }
 
+/*
+ *
+ *
+ */
 void Game::shutdown(){
+
+  // destroy objects
+  
   SDL_DestroyRenderer(mRenderer);
   SDL_DestroyWindow(mWindow);
   SDL_Quit();
 }
 
-// PRIVATE
+// PRIVATE --------------------------------------------------
 
+/*
+ *
+ *
+ */
 void Game::processInput(){
   SDL_Event event;
   
@@ -79,15 +102,49 @@ void Game::processInput(){
   if(state[SDL_SCANCODE_ESCAPE]){
     mIsRunning = false;
   };
-}
 
-void Game::updateGame(){
-
-  double deltaTime = (SDL_GetTicks() - mTicksCount) / 1000.0;
-  mTicksCount = SDL_GetTicks();
+    
+  // Update Paddle Position
+  mLPaddle.resetDirection();
+  if(state[SDL_SCANCODE_W]){
+    mLPaddle.decrement();
+  }
   
+  if(state[SDL_SCANCODE_S]){
+    mLPaddle.increment();
+  }
+
 }
 
+/* function: updateGame()
+ *
+ * Update objects in game world as function of delta time
+ */
+void Game::updateGame(){
+  
+  // Wait until given time span (frameMs) has elapsed since last frame
+  while (!SDL_TICKS_PASSED(SDL_GetTicks(), mTicksCount + frameMs)){};
+
+  // SDL_GetTicks() returns the number of milliseconds elapsed
+  // since SDL_Init() call. Delta time is the difference in ticks
+  // from last frame, converted to seconds.
+  double deltaTime = (SDL_GetTicks() - mTicksCount) / 1000.0;
+
+  mTicksCount = SDL_GetTicks(); // update tick counts for next frame
+  
+  //clamp maximum delta time value
+  if(deltaTime > maxDelta){
+    deltaTime = maxDelta;
+  }
+
+  mLPaddle.move(pixelsPerSecond, deltaTime);
+
+}
+
+/*
+ *
+ *
+ */
 void Game::generateOutput(){
 
   SDL_SetRenderDrawColor(mRenderer,
@@ -99,62 +156,77 @@ void Game::generateOutput(){
 
   SDL_SetRenderDrawColor(mRenderer, 255, 255, 255, 255);
   
-  renderWalls();
-  renderBall();
-  renderPaddles();
+  renderGamePieces();
  
   SDL_RenderPresent(mRenderer);
 }
 
-void Game::renderWalls(){
+
+/* function: generateGamePieces()
+ *
+ *
+ */
+void Game::generateGamePieces(){
+  SDL_Log("Generating Game Pieces");
   
-  Wall top(0,
-           0,
-           winWidth,
-           thickness);
-  Wall bottom(0,
-              winHeight - thickness,
-              winWidth,
-              thickness);
-  Wall right(winWidth - thickness,
-             0,
-             thickness,
-             winHeight);
-  Wall left(0,
-            0,
-            thickness,
-            winHeight);
-
-  renderGamePiece(&top);
-  renderGamePiece(&bottom);
-  renderGamePiece(&right);
-  renderGamePiece(&left);
-}
-
-void Game::renderBall(){
-
-  Ball ball(winWidth/2,
-            winHeight/2,
-            thickness,
-            thickness);
-  renderGamePiece(&ball);
-}
-
-void Game::renderPaddles(){
-
-  Paddle leftPaddle(thickness*2,
-                    static_cast<int>((winHeight-paddleHeight)/2),
-                    thickness,
-                    paddleHeight);
-  Paddle rightPaddle(winWidth - thickness*3,
+   mBall.update(winWidth/2,
+                winHeight/2,
+                thickness,
+                thickness);
+   mRPaddle.update(winWidth - thickness*3,
                      static_cast<int>((winHeight-paddleHeight)/2),
                      thickness,
                      paddleHeight);
+   mLPaddle.update(thickness*2,
+                    static_cast<int>((winHeight-paddleHeight)/2),
+                    thickness,
+                    paddleHeight);
+   
+   // Walls
+   mTopWall.update(0,
+                   0,
+                   winWidth,
+                   thickness);
+   mBottomWall.update(0,
+                      winHeight - thickness,
+                      winWidth,
+                      thickness);
+   mRightWall.update(winWidth - thickness,
+                     0,
+                     thickness,
+                     winHeight);
+   mLeftWall.update(0,
+                    0,
+                    thickness,
+                    winHeight);
 
-  renderGamePiece(&leftPaddle);
-  renderGamePiece(&rightPaddle);
 }
 
+/* function: renderGamePieces()
+ *
+ *
+ */
+void Game::renderGamePieces(){
+  renderGamePiece(&mBall);
+  renderGamePiece(&mRPaddle);
+  renderGamePiece(&mLPaddle);
+  renderGamePiece(&mTopWall);
+  renderGamePiece(&mBottomWall);
+  renderGamePiece(&mLeftWall);
+  renderGamePiece(&mRightWall);
+}
+
+/* function: destroyGamePieces()
+ *
+ *
+ */
+void Game::destroyGamePieces(){
+}
+
+/*
+ *
+ *
+ */
 void Game::renderGamePiece(GamePiece* g){
   SDL_Rect rect{g->getX(),
                 g->getY(),

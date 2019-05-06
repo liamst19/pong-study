@@ -22,3 +22,8 @@ int Ball::getWidth(){
 int Ball::getHeight(){
   return height;
 }
+
+void Ball::move(int x, int y){
+  xPosition += x;
+  yPosition += y;
+}

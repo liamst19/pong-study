@@ -12,14 +12,25 @@
 
 class Paddle: public GamePiece{
  public:
-  
-  Paddle(int x, int y, int w, int h): GamePiece(x, y, w, h) {};
+  Paddle(int h): winHeight(h), direction{0}{};
   ~Paddle(){};
   
   int getX();
   int getY();
   int getWidth();
   int getHeight();
+
+  int increment();
+  int decrement();
+  void resetDirection();
+  int move(double pixelsPerSecond, double deltaTime);
+  
+  const int getYMin();
+  const int getYMax();
+
+private:
+  int winHeight;
+  int direction;
  
 };
 

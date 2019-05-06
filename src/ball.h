@@ -12,13 +12,15 @@
 class Ball: public GamePiece{
  public:
   
- Ball(int x, int y, int w, int h): GamePiece(x, y, w, h) {};
+  Ball(){};
  ~Ball(){};
-  
- int getX();
- int getY();
- int getWidth();
- int getHeight();
+
+  int getX();
+  int getY();
+  int getWidth();
+  int getHeight();
+
+  void move(int x, int y);
 };
 
 #endif

@@ -35,6 +35,9 @@ build/
 *.out
 *.app
 
+# ignore emacs autosaves
+\#*#
+
 ### Tags ###
 # Ignore tags created by etags, ctags, gtags (GNU global) and cscope
 TAGS
