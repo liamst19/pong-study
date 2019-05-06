@@ -104,14 +104,22 @@ void Game::processInput(){
   };
 
     
-  // Update Paddle Position
+  // Update Paddle Positions
+  // Left Paddle
   mLPaddle.resetDirection();
   if(state[SDL_SCANCODE_W]){
-    mLPaddle.decrement();
+    mLPaddle.decrementDirection();
   }
-  
   if(state[SDL_SCANCODE_S]){
-    mLPaddle.increment();
+    mLPaddle.incrementDirection();
+  }
+  // Right Paddle
+  mRPaddle.resetDirection();
+  if(state[SDL_SCANCODE_K]){
+    mRPaddle.decrementDirection();
+  }
+  if(state[SDL_SCANCODE_J]){
+    mRPaddle.incrementDirection();
   }
 
 }
@@ -130,15 +138,20 @@ void Game::updateGame(){
   // from last frame, converted to seconds.
   double deltaTime = (SDL_GetTicks() - mTicksCount) / 1000.0;
 
-  mTicksCount = SDL_GetTicks(); // update tick counts for next frame
-  
   //clamp maximum delta time value
   if(deltaTime > maxDelta){
     deltaTime = maxDelta;
   }
 
-  mLPaddle.move(pixelsPerSecond, deltaTime);
+  // calculate pixels from delta
+  int pixels = static_cast<int>(deltaTime * pixelsPerSecond);
 
+  mTicksCount = SDL_GetTicks(); // update tick counts for next frame
+
+  // move paddles
+  mLPaddle.move(pixels);
+  mRPaddle.move(pixels);
+  
 }
 
 /*
@@ -168,19 +181,27 @@ void Game::generateOutput(){
  */
 void Game::generateGamePieces(){
   SDL_Log("Generating Game Pieces");
+
+
+  int topEdge = thickness;
+  int bottomEdge = winHeight - thickness;
   
    mBall.update(winWidth/2,
                 winHeight/2,
                 thickness,
                 thickness);
+   
    mRPaddle.update(winWidth - thickness*3,
-                     static_cast<int>((winHeight-paddleHeight)/2),
-                     thickness,
-                     paddleHeight);
+                   static_cast<int>((winHeight-paddleHeight)/2),
+                   thickness,
+                   paddleHeight);
+   mRPaddle.setEdges(topEdge, bottomEdge);
+   
    mLPaddle.update(thickness*2,
-                    static_cast<int>((winHeight-paddleHeight)/2),
-                    thickness,
-                    paddleHeight);
+                   static_cast<int>((winHeight-paddleHeight)/2),
+                   thickness,
+                   paddleHeight);
+   mLPaddle.setEdges(topEdge, bottomEdge);
    
    // Walls
    mTopWall.update(0,

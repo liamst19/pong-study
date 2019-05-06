@@ -58,7 +58,7 @@ class Game{
   int mTicksCount; // for counting delta time
 
   Ball mBall; // Ball
-  Paddle mRPaddle{winHeight}, mLPaddle{winHeight}; // Paddles
+  Paddle mRPaddle, mLPaddle; // Paddles
   Wall mTopWall, mBottomWall, mRightWall, mLeftWall;
   
   // Helper Functions for the game loop

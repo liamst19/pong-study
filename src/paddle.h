@@ -12,25 +12,28 @@
 
 class Paddle: public GamePiece{
  public:
-  Paddle(int h): winHeight(h), direction{0}{};
+  Paddle():
+    direction(0){};
   ~Paddle(){};
+
+  void setEdges(int top, int bottom){
+    topEdgeY = top;
+    bottomEdgeY = bottom;
+  }
   
   int getX();
   int getY();
   int getWidth();
   int getHeight();
 
-  int increment();
-  int decrement();
+  int incrementDirection();
+  int decrementDirection();
   void resetDirection();
-  int move(double pixelsPerSecond, double deltaTime);
-  
-  const int getYMin();
-  const int getYMax();
+  int move(int pixels);
 
 private:
-  int winHeight;
   int direction;
+  int topEdgeY, bottomEdgeY;
  
 };
 

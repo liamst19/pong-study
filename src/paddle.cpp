@@ -23,36 +23,28 @@ int Paddle::getHeight(){
   return height;
 }
 
-const int Paddle::getYMin(){
-  return static_cast<int>(height/2.0 + width);
-}
-
-const int Paddle::getYMax(){
-  return static_cast<int>(winHeight - height/2.0 - width);
-}
-
 void Paddle::resetDirection(){
   direction = 0;
 }
 
-int Paddle::increment(){
+int Paddle::incrementDirection(){
   return ++direction;
 }
 
-int Paddle::decrement(){
+int Paddle::decrementDirection(){
   return --direction;
 }
 
-// seems kind of inelegant
-int Paddle::move(double pixelsPerSecond, double deltaTime){
+int Paddle::move(int pixels){
   
-  yPosition += static_cast<int>(direction * pixelsPerSecond * deltaTime);
+  yPosition += direction * pixels;
 
-  if(yPosition < getYMin()){
-    yPosition = getYMin();
+  // If the paddle goes over the top or bottom edge
+  if(yPosition < topEdgeY){
+    yPosition = topEdgeY;
   }
-  else if(yPosition > getYMax()){
-    yPosition = getYMax();
+  else if(yPosition + height > bottomEdgeY){
+    yPosition = bottomEdgeY - height;
   }
 
   return yPosition;
