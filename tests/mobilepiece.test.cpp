@@ -38,90 +38,10 @@ TEST_CASE("MobilePiece"){
     
       REQUIRE(mobilePiece.getXVelocity() == 45.0);
       REQUIRE(mobilePiece.getYVelocity() == 35.0);
-    
-      SECTION("Update Size"){
-        mobilePiece.updateSize(80,    // width
-                               10);   // height
-    
-        REQUIRE(mobilePiece.getWidth() == 80);
-        REQUIRE(mobilePiece.getHeight() == 10);
-    
-        REQUIRE(mobilePiece.getX() == 100);
-        REQUIRE(mobilePiece.getY() == 250);
-        REQUIRE(mobilePiece.getXLeft() == static_cast<int>(100-(80/2)));
-        REQUIRE(mobilePiece.getXRight() == static_cast<int>(100+(80/2)));
-        REQUIRE(mobilePiece.getYTop() == static_cast<int>(250-(10/2)));
-        REQUIRE(mobilePiece.getYBottom() == static_cast<int>(250+(10/2)));
-    
-        REQUIRE(mobilePiece.getXVelocity() == 45.0);
-        REQUIRE(mobilePiece.getYVelocity() == 35.0);
-      }
-      
-      SECTION("Update Position"){
-        mobilePiece.updatePosition(80,    // x-position
-                                 10);   // y-position
-    
-        REQUIRE(mobilePiece.getWidth() == 25);
-        REQUIRE(mobilePiece.getHeight() == 50);
-    
-        REQUIRE(mobilePiece.getX() == 80);
-        REQUIRE(mobilePiece.getY() == 10);
-        REQUIRE(mobilePiece.getXLeft() == static_cast<int>(80-(25/2)));
-        REQUIRE(mobilePiece.getXRight() == static_cast<int>(80+(25/2)));
-        REQUIRE(mobilePiece.getYTop() == static_cast<int>(10-(50/2)));
-        REQUIRE(mobilePiece.getYBottom() == static_cast<int>(10+(50/2)));
-    
-        REQUIRE(mobilePiece.getXVelocity() == 45.0);
-        REQUIRE(mobilePiece.getYVelocity() == 35.0);
-      }
-      
-      SECTION("Update x Position"){
-        mobilePiece.updateXPosition(85);   // x-position
-        
-        REQUIRE(mobilePiece.getWidth() == 25);
-        REQUIRE(mobilePiece.getHeight() == 50);
-    
-        REQUIRE(mobilePiece.getX() == 85);
-        REQUIRE(mobilePiece.getY() == 250);
-        REQUIRE(mobilePiece.getXLeft() == static_cast<int>(85-(25/2)));
-        REQUIRE(mobilePiece.getXRight() == static_cast<int>(85+(25/2)));
-        REQUIRE(mobilePiece.getYTop() == static_cast<int>(250-(50/2)));
-        REQUIRE(mobilePiece.getYBottom() == static_cast<int>(250+(50/2)));
-    
-        REQUIRE(mobilePiece.getXVelocity() == 45.0);
-        REQUIRE(mobilePiece.getYVelocity() == 35.0);
-      }
-      
-      SECTION("Update y Position"){
-        mobilePiece.updateYPosition(88);   // y-position
-        
-        REQUIRE(mobilePiece.getWidth() == 25);
-        REQUIRE(mobilePiece.getHeight() == 50);
-    
-        REQUIRE(mobilePiece.getX() == 100);
-        REQUIRE(mobilePiece.getY() == 88);
-        REQUIRE(mobilePiece.getXLeft() == static_cast<int>(100-(25/2)));
-        REQUIRE(mobilePiece.getXRight() == static_cast<int>(100+(25/2)));
-        REQUIRE(mobilePiece.getYTop() == static_cast<int>(88-(50/2)));
-        REQUIRE(mobilePiece.getYBottom() == static_cast<int>(88+(50/2)));
-    
-        REQUIRE(mobilePiece.getXVelocity() == 45.0);
-        REQUIRE(mobilePiece.getYVelocity() == 35.0);
-      }
       
       SECTION("Update Velocity"){
         mobilePiece.updateVelocity(80.5,    // x-velocity
                                  10.3);   // y-velocity
-        
-        REQUIRE(mobilePiece.getWidth() == 25);
-        REQUIRE(mobilePiece.getHeight() == 50);
-    
-        REQUIRE(mobilePiece.getX() == 100);
-        REQUIRE(mobilePiece.getY() == 250);
-        REQUIRE(mobilePiece.getXLeft() == static_cast<int>(100-(25/2)));
-        REQUIRE(mobilePiece.getXRight() == static_cast<int>(100+(25/2)));
-        REQUIRE(mobilePiece.getYTop() == static_cast<int>(250-(50/2)));
-        REQUIRE(mobilePiece.getYBottom() == static_cast<int>(250+(50/2)));
     
         REQUIRE(mobilePiece.getXVelocity() == 80.5);
         REQUIRE(mobilePiece.getYVelocity() == 10.3);    
@@ -129,16 +49,6 @@ TEST_CASE("MobilePiece"){
       
       SECTION("Update x Velocity"){
         mobilePiece.updateXVelocity(80);   // x-velocity
-        
-        REQUIRE(mobilePiece.getWidth() == 25);
-        REQUIRE(mobilePiece.getHeight() == 50);
-    
-        REQUIRE(mobilePiece.getX() == 100);
-        REQUIRE(mobilePiece.getY() == 250);
-        REQUIRE(mobilePiece.getXLeft() == static_cast<int>(100-(25/2)));
-        REQUIRE(mobilePiece.getXRight() == static_cast<int>(100+(25/2)));
-        REQUIRE(mobilePiece.getYTop() == static_cast<int>(250-(50/2)));
-        REQUIRE(mobilePiece.getYBottom() == static_cast<int>(250+(50/2)));
     
         REQUIRE(mobilePiece.getXVelocity() == 80.0);
         REQUIRE(mobilePiece.getYVelocity() == 35.0);    
@@ -146,16 +56,6 @@ TEST_CASE("MobilePiece"){
       
       SECTION("Update y Velocity"){
         mobilePiece.updateYVelocity(80);   // y-velocity
-        
-        REQUIRE(mobilePiece.getWidth() == 25);
-        REQUIRE(mobilePiece.getHeight() == 50);
-    
-        REQUIRE(mobilePiece.getX() == 100);
-        REQUIRE(mobilePiece.getY() == 250);
-        REQUIRE(mobilePiece.getXLeft() == static_cast<int>(100-(25/2)));
-        REQUIRE(mobilePiece.getXRight() == static_cast<int>(100+(25/2)));
-        REQUIRE(mobilePiece.getYTop() == static_cast<int>(250-(50/2)));
-        REQUIRE(mobilePiece.getYBottom() == static_cast<int>(250+(50/2)));
     
         REQUIRE(mobilePiece.getXVelocity() == 45.0);
         REQUIRE(mobilePiece.getYVelocity() == 80.0);    
@@ -163,33 +63,30 @@ TEST_CASE("MobilePiece"){
     }
   }
 
-  SECTION("Boundary Test"){
-    mobilePiece.update(10, 10, 50, 50, 0, 0);
-    mobilePiece.setBoundary(0, 100, 0, 100);
+  SECTION("Motion Test"){
+    mobilePiece.update(10, 10, 250, 250, 10, 10);
 
-    REQUIRE_FALSE(mobilePiece.isAtBottom());
-    REQUIRE_FALSE(mobilePiece.isAtTop());
-    REQUIRE_FALSE(mobilePiece.isAtLeft());
-    REQUIRE_FALSE(mobilePiece.isAtRight());
+    SECTION("Move 1 second"){
+      mobilePiece.move(1);
 
-    SECTION("Hitting Top"){
-      mobilePiece.updateYPosition(0);
-      REQUIRE(mobilePiece.isAtTop());
+      REQUIRE(mobilePiece.getX() == 260);
+      REQUIRE(mobilePiece.getY() == 260);
     }
-    
-    SECTION("Hitting Bottom"){
-      mobilePiece.updateYPosition(100);
-      REQUIRE(mobilePiece.isAtBottom());
+
+    SECTION("change x-direction"){
+      mobilePiece.updateXPosition(450);
+      mobilePiece.updateVelocity(10, 0);
+      mobilePiece.changeXDirection();
+
+      REQUIRE(mobilePiece.getXVelocity() == -10.0);
     }
-    
-    SECTION("Hitting Left"){
-      mobilePiece.updateXPosition(0);
-      REQUIRE(mobilePiece.isAtLeft());
-    }
-    
-    SECTION("Hitting Right"){
-      mobilePiece.updateXPosition(100);
-      REQUIRE(mobilePiece.isAtRight());
+
+    SECTION("change y-direction"){
+      mobilePiece.updateYPosition(50);
+      mobilePiece.updateVelocity(0, 10);
+      mobilePiece.changeYDirection();
+
+      REQUIRE(mobilePiece.getYVelocity() == -10.0);
     }
   }
 

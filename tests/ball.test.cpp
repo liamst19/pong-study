@@ -4,7 +4,6 @@
 TEST_CASE("Ball"){
   Ball ball;
   ball.update(10, 10, 250, 250, 10, 10);
-  ball.setBoundary(0, 500, 0, 500);
 
   SECTION("Move 1 second"){
     ball.move(1);

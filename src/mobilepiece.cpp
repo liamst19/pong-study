@@ -7,17 +7,6 @@
 #include "gamepiece.h"
 #include "mobilepiece.h"
 
-/* function: setBoundary()
- *
- * Sets the bounds beyond which pieces can't move past. 
- */
-void MobilePiece::setBoundary(int yTop, int yBottom, int xLeft, int xRight){
-  boundaryTopY = yTop;
-  boundaryBottomY = yBottom;
-  boundaryLeftX = xLeft;
-  boundaryRightX = xRight;
-}
-
 // velocities of the object in motion
 double MobilePiece::getXVelocity() {
   return xVelocity;
@@ -49,23 +38,6 @@ void MobilePiece::updateYVelocity(double yVel){
 }
 
 // --------------------------------------------------
-// Functions to check position
-
-bool MobilePiece::isAtTop(){
-  return getYTop() <= boundaryTopY;
-}
-
-bool MobilePiece::isAtBottom(){
-  return getYBottom() >= boundaryBottomY;
-}
-
-bool MobilePiece::isAtLeft(){
-  return getXLeft() <= boundaryLeftX;
-}
-
-bool MobilePiece::isAtRight(){
-  return getXRight() >= boundaryRightX;
-}
 
 /* function: isColliding
  *
@@ -87,6 +59,9 @@ bool MobilePiece::isPointColliding(int x, int y){
  */
 bool MobilePiece::isColliding(GamePiece piece){  
   
+  // This seems to work, but I wonder if there are better ways to do this,
+  // perhaps informing which side piece is colliding.
+  // I would at least like to find more informative name than vert and horz.
   bool vert1 = ((piece.getYTop() <= getYTop()) && (piece.getYBottom() >= getYBottom()))
             || ((piece.getYTop() >= getYTop()) && (piece.getYBottom() <= getYBottom()));
   bool vert2 = ((piece.getYTop() >= getYTop() && piece.getYTop() <= getYBottom()))

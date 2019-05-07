@@ -269,7 +269,6 @@ void Game::generateGamePieces(){
                 winHeight/2,
                 ballXVelocity,
                 ballYVelocity);
-   mBall.setBoundary(topBoundaryY, bottomBoundaryY, leftBoundaryX, rightBoundaryX);
    
    mLPaddle.update(paddleThickness,
                    paddleHeight,
@@ -278,16 +277,12 @@ void Game::generateGamePieces(){
                    paddleXVelocity,
                    paddleYVelocity);
    
-   mLPaddle.setBoundary(topBoundaryY, bottomBoundaryY, leftBoundaryX, rightBoundaryX);
-   
    mRPaddle.update(paddleThickness,
                    paddleHeight,
                    winWidth - wallThickness - paddleMargin,
                    winHeight/2,
                    paddleXVelocity,
                    paddleYVelocity);
-   
-   mRPaddle.setBoundary(topBoundaryY, bottomBoundaryY, leftBoundaryX, rightBoundaryX);
    
    // Walls
    mTopWall.update(winWidth,

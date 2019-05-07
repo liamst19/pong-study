@@ -18,8 +18,6 @@ class MobilePiece: public GamePiece{
 
   void move(double seconds);
 
-  void setBoundary(int yTopY, int yBottom, int xLeft, int xRight);
-
   double getXVelocity();
   double getYVelocity();
 
@@ -30,18 +28,12 @@ class MobilePiece: public GamePiece{
   void changeXDirection();
   void changeYDirection();
   
-  bool isAtTop();
-  bool isAtBottom();
-  bool isAtLeft();
-  bool isAtRight();
   bool isPointColliding(int x, int y);
   bool isColliding(GamePiece piece);
   
  protected:
 
   double xVelocity{0}, yVelocity{0}; // for motion
-  int boundaryTopY, boundaryBottomY;
-  int boundaryLeftX, boundaryRightX;
 };
 
 #endif
