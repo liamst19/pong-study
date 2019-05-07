@@ -34,8 +34,8 @@ class MobilePiece: public GamePiece{
   bool isAtBottom();
   bool isAtLeft();
   bool isAtRight();
-  bool isColliding(int x, int y);
-  bool isRectColliding(int xLeft, int xRight, int yTop, int yBottom);
+  bool isPointColliding(int x, int y);
+  bool isColliding(GamePiece piece);
   
  protected:
 

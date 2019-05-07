@@ -32,7 +32,7 @@ bool Game::initialize(){
   };
 
   // create window
- mWindow = SDL_CreateWindow("Pong Study",
+  mWindow = SDL_CreateWindow("Pong Study",
                              xWinCoordinate,
                              yWinCoordinate,
                              winWidth,
@@ -73,9 +73,6 @@ void Game::runLoop(){
  *
  */
 void Game::shutdown(){
-
-  // destroy objects
-  
   SDL_DestroyRenderer(mRenderer);
   SDL_DestroyWindow(mWindow);
   SDL_Quit();
@@ -83,9 +80,10 @@ void Game::shutdown(){
 
 // PRIVATE --------------------------------------------------
 
-/*
+/* function: processInput()
  *
- *
+ * Get keyboard input and do something with it
+ * 
  */
 void Game::processInput(){
   SDL_Event event;
@@ -100,10 +98,11 @@ void Game::processInput(){
 
   // Get state of keyboard
   const Uint8* state = SDL_GetKeyboardState(NULL);
+
+  // Exit Game
   if(state[SDL_SCANCODE_ESCAPE]){
     mIsRunning = false;
   };
-
     
   // Update Paddle Positions
   // Left Paddle
@@ -146,54 +145,94 @@ void Game::updateGame(){
 
   mTicksCount = SDL_GetTicks(); // update tick counts for next frame
 
-  // move paddles
-  mLPaddle.move(deltaTime);
-  mRPaddle.move(deltaTime);
+  moveGamePieces(deltaTime); // Do stuff with game pieces
   
-  // check paddle for wall hits here?
+}
+
+/* function: moveGamePieces()
+ *
+ *
+ */
+void Game::moveGamePieces(double deltaTime){
+
+  // move paddles
+  movePaddle(&mLPaddle, deltaTime);
+  movePaddle(&mRPaddle, deltaTime);
   
   // move ball
-  mBall.move(deltaTime);
+  moveBall(&mBall, deltaTime);
 
-  // Check for ball collisions here, since collisions are events
-  // that are external to objects.
+}
+
+/* function: movePaddle()
+ *
+ *
+ */
+void Game::movePaddle(Paddle* paddle, double deltaTime){
+
+  // move paddles
+  paddle->move(deltaTime);
   
-  // Flip y-direction if ball collides or exceeds
-  // top or bottom edges.
-  if((mBall.getYTop() <= topBoundaryY && mBall.getYVelocity() < 0.0)
-  || (mBall.getYBottom() >= bottomBoundaryY && mBall.getYVelocity() > 0.0)){
-    mBall.changeYDirection();
+  // check paddle for wall hits here?
+  if(paddle->isColliding(mTopWall)){
+    paddle->updateYPosition(topBoundaryY + paddle->getHeight()/2);
+  }
+  else if(paddle->isColliding(mBottomWall)){
+    paddle->updateYPosition(bottomBoundaryY - paddle->getHeight()/2);
+  }
+  
+}
+
+/* function: moveBall()
+ *
+ *
+ */
+void Game::moveBall(Ball* ball, double deltaTime){
+
+  ball->move(deltaTime);
+  
+  // Flip y-direction if ball collides or exceeds top or bottom
+  if((ball->getYTop() <= topBoundaryY && ball->getYVelocity() < 0.0)
+  || (ball->getYBottom() >= bottomBoundaryY && ball->getYVelocity() > 0.0)){
+    ball->changeYDirection();
   }
 
   // When ball hits the side walls
-  if(mBall.isAtLeft()){
-    mBall.updatePosition(winWidth/2, winHeight/2);
-    mBall.changeXDirection();
+  bool goal = false;
+
+  // In case there will be scoring
+  if(ball->getXLeft() < leftBoundaryX){
+    SDL_Log("Right player scores");
+    goal = true;
   }
-  else if(mBall.isAtRight()){
-    mBall.updatePosition(winWidth/2, winHeight/2);
-    mBall.changeXDirection();
+  else if(ball->getXRight() > rightBoundaryX){
+    SDL_Log("Left player scores");
+    goal = true;
+  }
+
+  if(goal){
+    ball->updatePosition(winWidth/2, winHeight/2);
+    ball->changeXDirection();
   }
 
   // Flip x-direction if ball collides with paddle.
+  // TODO?: pass a predicate to a function?
   double diff{0};
 
   // Left Paddle Collision
-  diff = std::abs(mBall.getY() - mLPaddle.getY());
+  diff = std::abs(ball->getY() - mLPaddle.getY());
   if(diff <= mLPaddle.getHeight()/2.0
-     && mLPaddle.isRectColliding(mBall.getXLeft(), mBall.getXRight(),
-                                 mBall.getYTop(), mBall.getYBottom())
-     && mBall.getXVelocity() < 0){
-       mBall.changeXDirection(); 
+     && mLPaddle.isColliding(*ball)
+     && ball->getXVelocity() < 0){
+       ball->changeXDirection(); 
      }
 
   // Right Paddle Collision
-  diff = std::abs(mBall.getY() - mRPaddle.getY());
+  diff = std::abs(ball->getY() - mRPaddle.getY());
   if(diff <= mRPaddle.getHeight()/2.0
-     && mRPaddle.isRectColliding(mBall.getXLeft(), mBall.getXRight(),
-                                 mBall.getYTop(), mBall.getYBottom())
-     && mBall.getXVelocity() > 0){
-       mBall.changeXDirection(); 
+     && mRPaddle.isColliding(*ball)
+     && ball->getXVelocity() > 0){
+       ball->changeXDirection(); 
      }
 }
 
@@ -223,7 +262,6 @@ void Game::generateOutput(){
  *
  */
 void Game::generateGamePieces(){
-  SDL_Log("Generating Game Pieces");
   
    mBall.update(ballSize,
                 ballSize,

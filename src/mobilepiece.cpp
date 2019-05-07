@@ -73,7 +73,7 @@ bool MobilePiece::isAtRight(){
  * game object
  *
  */
-bool MobilePiece::isColliding(int x, int y){
+bool MobilePiece::isPointColliding(int x, int y){
   return (y >= getYTop())
       && (y <= getYBottom())
       && (x >= getXLeft())
@@ -85,30 +85,17 @@ bool MobilePiece::isColliding(int x, int y){
  * checks whether given rectangle is colliding with object
  *
  */
-bool MobilePiece::isRectColliding(int xLeft, int xRight, int yTop, int yBottom){  
-
-  // Swap if necessary
-  int swap{0};
-  if(xLeft > xRight){
-    swap = xLeft;
-    xLeft = xRight;
-    xRight = swap;
-  }
-  if(yTop > yBottom){
-    swap = yTop;
-    yTop = yBottom;
-    yBottom = swap;
-  }
+bool MobilePiece::isColliding(GamePiece piece){  
   
-  bool vert1 = ((yTop <= getYTop()) && (yBottom >= getYBottom()))
-            || ((yTop >= getYTop()) && (yBottom <= getYBottom()));
-  bool vert2 = ((yTop >= getYTop() && yTop <= getYBottom()))
-            || ((yBottom >= getYTop()) && (yBottom <= getYBottom()));
+  bool vert1 = ((piece.getYTop() <= getYTop()) && (piece.getYBottom() >= getYBottom()))
+            || ((piece.getYTop() >= getYTop()) && (piece.getYBottom() <= getYBottom()));
+  bool vert2 = ((piece.getYTop() >= getYTop() && piece.getYTop() <= getYBottom()))
+            || ((piece.getYBottom() >= getYTop()) && (piece.getYBottom() <= getYBottom()));
 
-  bool horz1 = ((xLeft <= getXLeft()) && (xRight >= getXRight()))
-            || ((xLeft >= getXLeft()) && (xRight <= getXRight()));
-  bool horz2 = ((xLeft >= getXLeft()) && (xLeft <= getXRight()))
-            || ((xRight >= getXLeft()) && (xRight <= getXRight()));
+  bool horz1 = ((piece.getXLeft() <= getXLeft()) && (piece.getXRight() >= getXRight()))
+            || ((piece.getXLeft() >= getXLeft()) && (piece.getXRight() <= getXRight()));
+  bool horz2 = ((piece.getXLeft() >= getXLeft()) && (piece.getXLeft() <= getXRight()))
+            || ((piece.getXRight() >= getXLeft()) && (piece.getXRight() <= getXRight()));
   
   return (vert1 || vert2) && (horz1 || horz2);
 }

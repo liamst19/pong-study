@@ -12,7 +12,10 @@ TEST_CASE("MobilePiece"){
   REQUIRE(mobilePiece.getXRight() == 0);
   REQUIRE(mobilePiece.getYTop() == 0);
   REQUIRE(mobilePiece.getYBottom() == 0);
-
+  
+  REQUIRE(mobilePiece.getXVelocity() == 0.0);
+  REQUIRE(mobilePiece.getYVelocity() == 0.0);
+ 
   SECTION("Initialize"){
 
     SECTION("Update GamePiece"){
@@ -38,7 +41,7 @@ TEST_CASE("MobilePiece"){
     
       SECTION("Update Size"){
         mobilePiece.updateSize(80,    // width
-                             10);   // height
+                               10);   // height
     
         REQUIRE(mobilePiece.getWidth() == 80);
         REQUIRE(mobilePiece.getHeight() == 10);
@@ -194,36 +197,44 @@ TEST_CASE("MobilePiece"){
     mobilePiece.update(10, 10, 50, 50, 0, 0);
  
     SECTION("Collision"){
-      REQUIRE(mobilePiece.isColliding(48, 55));
-      REQUIRE_FALSE(mobilePiece.isColliding(6, 6));
+      REQUIRE(mobilePiece.isPointColliding(48, 55));
+      REQUIRE_FALSE(mobilePiece.isPointColliding(6, 6));
     }
 
-    SECTION("Overlapping object"){
-      REQUIRE(mobilePiece.isRectColliding(45, 55, 45, 50));
-    }
+    GamePiece gPiece;
+    gPiece.update(10, 10, 50, 50);
     
-    SECTION("Corners touching"){
-      REQUIRE(mobilePiece.isRectColliding(35, 45, 35, 45)); // top left corner
-      REQUIRE(mobilePiece.isRectColliding(55, 65, 35, 45)); // top right corner
-      REQUIRE(mobilePiece.isRectColliding(35, 45, 55, 65)); // bottom left corner
-      REQUIRE(mobilePiece.isRectColliding(55, 65, 55, 65)); // bottom right corner
+    SECTION("Object corners touching"){
+      gPiece.updatePosition(45, 45);
+      REQUIRE(mobilePiece.isColliding(gPiece));
+      gPiece.updatePosition(45, 55);
+      REQUIRE(mobilePiece.isColliding(gPiece));
+      gPiece.updatePosition(55, 45);
+      REQUIRE(mobilePiece.isColliding(gPiece));
+      gPiece.updatePosition(55, 55);
+      REQUIRE(mobilePiece.isColliding(gPiece));
     }
 
-    SECTION("Sides Overlapping"){
-      REQUIRE(mobilePiece.isRectColliding(53, 56, 52, 54)); // obj inside
-      REQUIRE(mobilePiece.isRectColliding(20, 100, 10, 85)); // obj envelopes
-      REQUIRE(mobilePiece.isRectColliding(35, 65, 50, 65)); // top side
-      REQUIRE(mobilePiece.isRectColliding(35, 65, 65, 50)); // top side (swapped)
-      REQUIRE(mobilePiece.isRectColliding(35, 65, 35, 50)); // bottom side
-      REQUIRE(mobilePiece.isRectColliding(50, 65, 35, 65)); // left side
-      REQUIRE(mobilePiece.isRectColliding(35, 50, 35, 65)); // right side
+    SECTION("Objects overlapping"){
+      gPiece.update(10, 10, 50, 50);
+      REQUIRE(mobilePiece.isColliding(gPiece));
+      gPiece.update(10, 10, 55, 55);
+      REQUIRE(mobilePiece.isColliding(gPiece));
+      gPiece.update(30, 30, 50, 50);      
+      REQUIRE(mobilePiece.isColliding(gPiece));
+      gPiece.update(2, 2, 50, 50);      
+      REQUIRE(mobilePiece.isColliding(gPiece));
+      gPiece.update(30, 2, 50, 50);      
+      REQUIRE(mobilePiece.isColliding(gPiece));
+      gPiece.update(2, 30, 50, 50);      
+      REQUIRE(mobilePiece.isColliding(gPiece));
     }
 
     SECTION("Object not touching or overlapping"){
-      REQUIRE_FALSE(mobilePiece.isRectColliding(10, 15, 10, 15));
-      REQUIRE_FALSE(mobilePiece.isRectColliding(10, 15, 50, 75));
-      REQUIRE_FALSE(mobilePiece.isRectColliding(50, 65, 10, 15));
-      REQUIRE_FALSE(mobilePiece.isRectColliding(100, 150, 10, 15));
+      gPiece.update(10, 10, 5, 5);      
+      REQUIRE_FALSE(mobilePiece.isColliding(gPiece));
+      gPiece.update(10, 10, 75, 75);      
+      REQUIRE_FALSE(mobilePiece.isColliding(gPiece));
     }
        
   }

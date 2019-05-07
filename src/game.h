@@ -83,6 +83,10 @@ class Game{
   void updateGame();
   void generateOutput();
 
+  void moveGamePieces(double deltaTime);
+  void movePaddle(Paddle* paddle, double deltaTime);
+  void moveBall(Ball* ball, double deltaTime);
+
   void generateGamePieces();
   void destroyGamePieces();
   

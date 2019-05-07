@@ -23,13 +23,5 @@ int Paddle::move(double seconds){
   
   yPosition += direction * yVelocity * seconds;
 
-  // If the paddle goes over the top or bottom edge
-  if(isAtTop()){
-    updateYPosition(static_cast<int>(boundaryTopY + (height/2)));
-  }
-  else if(isAtBottom()){
-    updateYPosition(static_cast<int>(boundaryBottomY - (height/2)));
-  }
-
   return getY();
 }

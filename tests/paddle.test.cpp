@@ -22,21 +22,5 @@ TEST_CASE("Paddle"){
 
     REQUIRE(paddle.getY() == 300);
   }
-
-  SECTION("Move up beyond bounds"){
-    paddle.resetDirection();
-    paddle.decrementDirection();
-    paddle.move(50);
-
-    REQUIRE(paddle.getY() == 25);
-  }
-
-  SECTION("Move down beyond bounds"){
-    paddle.resetDirection();
-    paddle.incrementDirection();
-    paddle.move(50);
-
-    REQUIRE(paddle.getY() == 475);
-  }
   
 }
