@@ -22,9 +22,11 @@ class MobilePiece: public GamePiece{
   double getYVelocity();
 
   void update(int w, int h, int x, int y, double xVel, double yVel);
+
   void updateVelocity(double xVel, double yVel);
   void updateXVelocity(double xVel);
   void updateYVelocity(double yVel);
+
   void changeXDirection();
   void changeYDirection();
   
@@ -34,6 +36,7 @@ class MobilePiece: public GamePiece{
  protected:
 
   double xVelocity{0}, yVelocity{0}; // for motion
+
 };
 
 #endif

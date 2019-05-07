@@ -22,6 +22,7 @@
  *
  */
 class Game{
+
  public:
   Game():
     mIsRunning(true),
@@ -29,21 +30,19 @@ class Game{
   {};
   ~Game(){};
   
-  // Initialize the game
-  bool initialize();
-  // Runs the game loop until game is over
-  void runLoop();
-
-  // Shut down the game
-  void shutdown();
+  bool initialize(); // Initialize the game
+  void runLoop(); // Runs the game loop until game is over
+  void shutdown(); // Shut down the game
 
  private:
 
+  // --------------------------------------------------
+  // Some initial game settings
   const int xWinCoordinate{100};
   const int yWinCoordinate{100};
   const int winWidth{1024};
   const int winHeight{768};
-  const int flags{0};
+  const int sdlFlags{0};
   
   const int ballSize{10};
   const int ballMotion{1};
@@ -69,15 +68,19 @@ class Game{
   const double paddleYVelocity{300.0};
   const double ballXVelocity{-200.0};
   const double ballYVelocity{235.0};
-  
+  // --------------------------------------------------
+
   bool mIsRunning; // Game should continue to run
   int mTicksCount; // for counting delta time
 
   Ball mBall; // Ball
   Paddle mRPaddle, mLPaddle; // Paddles
-  Wall mTopWall, mBottomWall, mRightWall, mLeftWall;
+  Wall mTopWall, mBottomWall, mRightWall, mLeftWall; // walls
+
+  SDL_Window* mWindow; // Window created by SDL 
+  SDL_Renderer* mRenderer; // SDL Renderer
   
-  // Helper Functions for the game loop
+  // Helper Functions for the game loop ---------------
 
   void processInput();
   void updateGame();
@@ -92,9 +95,6 @@ class Game{
   
   void renderGamePieces();
   void renderGamePiece(GamePiece* g);
-
-  SDL_Window* mWindow; // Window created by SDL 
-  SDL_Renderer* mRenderer; // SDL Renderer
 };
 
 #endif

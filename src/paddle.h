@@ -18,16 +18,15 @@ class Paddle: public MobilePiece{
     direction(0){};
   ~Paddle(){};
 
+  void resetDirection();
   int incrementDirection();
   int decrementDirection();
-  void resetDirection();
+
   int move(double seconds);
 
 private:
   
-  int ballEdge; // left = -1, right = 1
   int direction;
-  int topEdgeY, bottomEdgeY;
  
 };
 

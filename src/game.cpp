@@ -37,7 +37,7 @@ bool Game::initialize(){
                              yWinCoordinate,
                              winWidth,
                              winHeight,
-                             flags);
+                             sdlFlags);
   if(!mWindow){
     SDL_Log("Failed to create window: %s", SDL_GetError());
     return false;
@@ -131,7 +131,8 @@ void Game::processInput(){
 void Game::updateGame(){
   
   // Wait until given time span (frameMs) has elapsed since last frame
-  while (!SDL_TICKS_PASSED(SDL_GetTicks(), mTicksCount + frameMs)){};
+  while (!SDL_TICKS_PASSED(SDL_GetTicks(), mTicksCount + frameMs)){
+  }
 
   // SDL_GetTicks() returns the number of milliseconds elapsed
   // since SDL_Init() call. Delta time is the difference in ticks

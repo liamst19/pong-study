@@ -37,9 +37,17 @@ void MobilePiece::updateYVelocity(double yVel){
   yVelocity = yVel;
 }
 
+void MobilePiece::changeXDirection(){
+  xVelocity *= -1;
+}
+
+void MobilePiece::changeYDirection(){
+  yVelocity *= -1;
+}
+
 // --------------------------------------------------
 
-/* function: isColliding
+/* function: isPointColliding
  *
  * checks whether the coordinate is within the bounds of
  * game object
@@ -52,7 +60,7 @@ bool MobilePiece::isPointColliding(int x, int y){
       && (x <= getXRight());
 }
 
-/* function: isRectColliding()
+/* function: isColliding()
  *
  * checks whether given rectangle is colliding with object
  *
@@ -85,12 +93,4 @@ bool MobilePiece::isColliding(GamePiece piece){
 void MobilePiece::move(double seconds){
   xPosition += static_cast<int>(xVelocity * seconds);
   yPosition += static_cast<int>(yVelocity * seconds);
-}
-
-void MobilePiece::changeXDirection(){
-  xVelocity *= -1;
-}
-
-void MobilePiece::changeYDirection(){
-  yVelocity *= -1;
 }
