@@ -4,22 +4,32 @@
  * bounce back.
  * 
  */
-
-#include "gamepiece.h"
+#include "mobilepiece.h"
 #include "paddle.h"
 
-int Paddle::getX(){
-  return xPosition;
+void Paddle::resetDirection(){
+  direction = 0;
 }
 
-int Paddle::getY(){
-  return yPosition;
+int Paddle::incrementDirection(){
+  return ++direction;
 }
 
-int Paddle::getWidth(){
-  return width;
+int Paddle::decrementDirection(){
+  return --direction;
 }
 
-int Paddle::getHeight(){
-  return height;
+int Paddle::move(double seconds){
+  
+  yPosition += direction * yVelocity * seconds;
+
+  // If the paddle goes over the top or bottom edge
+  if(isAtTop()){
+    updateYPosition(static_cast<int>(boundaryTopY + (height/2)));
+  }
+  else if(isAtBottom()){
+    updateYPosition(static_cast<int>(boundaryBottomY - (height/2)));
+  }
+
+  return getY();
 }

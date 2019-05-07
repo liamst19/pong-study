@@ -8,18 +8,26 @@
 #ifndef PADDLE_H
 #define PADDLE_H
 
-#include "gamepiece.h"
+#include "mobilepiece.h"
 
-class Paddle: public GamePiece{
+class Paddle: public MobilePiece{
+  
  public:
   
-  Paddle(int x, int y, int w, int h): GamePiece(x, y, w, h) {};
+  Paddle():
+    direction(0){};
   ~Paddle(){};
+
+  int incrementDirection();
+  int decrementDirection();
+  void resetDirection();
+  int move(double seconds);
+
+private:
   
-  int getX();
-  int getY();
-  int getWidth();
-  int getHeight();
+  int ballEdge; // left = -1, right = 1
+  int direction;
+  int topEdgeY, bottomEdgeY;
  
 };
 

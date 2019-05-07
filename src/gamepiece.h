@@ -11,24 +11,28 @@ class GamePiece{
 
 public:
 
-  GamePiece(int x, int y, int w, int h):
-    xPosition(x),
-    yPosition(y),
-    width(w),
-    height(h)
-  { };
-
+  GamePiece(){};
   virtual ~GamePiece(){};
-              
-  virtual int getX() { return xPosition; };
-  virtual int getY() { return yPosition; };
-  virtual int getWidth() { return width; };
-  virtual int getHeight() { return height; };
+
+  int getWidth();
+  int getHeight();
+  int getX();
+  int getY();
+  int getXLeft();
+  int getXRight();
+  int getYTop();
+  int getYBottom();  
+
+  void update(int w, int h, int x, int y);
+  void updateSize(int w, int h);
+  void updatePosition(int x, int y);
+  void updateXPosition(int x);
+  void updateYPosition(int y);
 
 protected:
 
-  int xPosition, yPosition;
-  int width, height;
+  int width{0}, height{0};
+  int xPosition{0}, yPosition{0};
   
 };
 

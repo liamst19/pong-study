@@ -1,20 +1,42 @@
 #include <catch2/catch.hpp>
 #include "../src/paddle.h"
 
-Paddle paddle(3, 4, 6, 0);
+TEST_CASE("Paddle"){
+  Paddle paddle;
+  paddle.update(10, 50, 250, 250, 0, 10);
+  paddle.setBoundary(0, 500, 0, 500);
 
-TEST_CASE("paddle.getX() should return 3"){
-  REQUIRE(paddle.getX() == 3);
-}
+  // Going to assume gamepiece and mobilepiece are doing their jobs
+  SECTION("Move up"){
+    paddle.resetDirection();
+    paddle.decrementDirection();
+    paddle.move(5);
 
-TEST_CASE("paddle.getY() should return 4"){
-  REQUIRE(paddle.getY() == 4);
-}
+    REQUIRE(paddle.getY() == 200);
+  }
 
-TEST_CASE("paddle.getWidth() should return 6"){
-  REQUIRE(paddle.getWidth() == 6);
-}
+  SECTION("Move down"){
+    paddle.resetDirection();
+    paddle.incrementDirection();
+    paddle.move(5);
 
-TEST_CASE("paddle.getHeight() should return 0"){
-  REQUIRE(paddle.getHeight() == 0);
+    REQUIRE(paddle.getY() == 300);
+  }
+
+  SECTION("Move up beyond bounds"){
+    paddle.resetDirection();
+    paddle.decrementDirection();
+    paddle.move(50);
+
+    REQUIRE(paddle.getY() == 25);
+  }
+
+  SECTION("Move down beyond bounds"){
+    paddle.resetDirection();
+    paddle.incrementDirection();
+    paddle.move(50);
+
+    REQUIRE(paddle.getY() == 475);
+  }
+  
 }

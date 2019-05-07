@@ -1,20 +1,31 @@
 #include <catch2/catch.hpp>
 #include "../src/ball.h"
 
-Ball ball(3, 4, 6, 0);
+TEST_CASE("Ball"){
+  Ball ball;
+  ball.update(10, 10, 250, 250, 10, 10);
+  ball.setBoundary(0, 500, 0, 500);
 
-TEST_CASE("ball.getX() should return 0"){
-  REQUIRE(ball.getX() == 0);
-}
+  SECTION("Move 1 second"){
+    ball.move(1);
 
-TEST_CASE("ball.getY() should return 1"){
-  REQUIRE(ball.getY() == 1);
-}
+    REQUIRE(ball.getX() == 260);
+    REQUIRE(ball.getY() == 260);
+  }
 
-TEST_CASE("ball.getWidth() should return 6"){
-  REQUIRE(ball.getWidth() == 6);
-}
+  SECTION("change x-direction"){
+    ball.updateXPosition(450);
+    ball.updateVelocity(10, 0);
+    ball.changeXDirection();
 
-TEST_CASE("ball.getHeight() should return 0"){
-  REQUIRE(ball.getHeight() == 0);
+    REQUIRE(ball.getXVelocity() == -10.0);
+  }
+
+  SECTION("change y-direction"){
+    ball.updateYPosition(50);
+    ball.updateVelocity(0, 10);
+    ball.changeYDirection();
+
+    REQUIRE(ball.getYVelocity() == -10.0);
+  }
 }
