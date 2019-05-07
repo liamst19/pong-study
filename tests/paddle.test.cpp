@@ -1,77 +1,42 @@
 #include <catch2/catch.hpp>
 #include "../src/paddle.h"
 
-TEST_CASE("Create paddle object"){
+TEST_CASE("Paddle"){
   Paddle paddle;
+  paddle.update(10, 50, 250, 250, 0, 10);
+  paddle.setBoundary(0, 500, 0, 500);
 
-  REQUIRE(paddle.getX() == 0);
-  REQUIRE(paddle.getY() == 0);
-  REQUIRE(paddle.getWidth() == 0);
-  REQUIRE(paddle.getHeight() == 0);
+  // Going to assume gamepiece and mobilepiece are doing their jobs
+  SECTION("Move up"){
+    paddle.resetDirection();
+    paddle.decrementDirection();
+    paddle.move(5);
 
-  SECTION("Update paddle"){
-    paddle.update(100, 100, 50, 50);
-
-    REQUIRE(paddle.getX() == 100);
-    REQUIRE(paddle.getY() == 100);
-    REQUIRE(paddle.getWidth() == 50);
-    REQUIRE(paddle.getHeight() == 50);
-
-    SECTION("Update Position"){
-      paddle.updatePosition(600, 800);
-      
-      REQUIRE(paddle.getX() == 600);
-      REQUIRE(paddle.getY() == 800);
-    }
-    SECTION("Update x"){
-      paddle.updateX(300);
-
-      REQUIRE(paddle.getX() == 300);
-    }
-
-    SECTION("Update y"){
-      paddle.updateY(300);
-
-      REQUIRE(paddle.getY() == 300);
-    }
-
-    // Setting Edges
-    paddle.setEdges(10, 500);
-
-    SECTION("increment paddle"){
-      paddle.resetDirection();
-      paddle.updateY(50);
-      paddle.incrementDirection();
-      paddle.move(50);
-
-      REQUIRE(paddle.getY() == 100);
-    }
-
-    SECTION("increment paddle, goes over the bottom edge"){
-      paddle.resetDirection();
-      paddle.updateY(480);
-      paddle.incrementDirection();
-      paddle.move(50);
-
-      REQUIRE(paddle.getY() == 450); // edge - height
-    }
-
-    SECTION("decrement paddle"){
-      paddle.resetDirection();
-      paddle.updateY(150);
-      paddle.decrementDirection();
-      paddle.move(50);
-
-      REQUIRE(paddle.getY() == 100);   
-    }
-
-    SECTION("decrement paddle, goes over the top edge"){
-      paddle.resetDirection();
-      paddle.updateY(20);
-      paddle.decrementDirection();
-      paddle.move(50);
-
-      REQUIRE(paddle.getY() == 10);   
-    }
+    REQUIRE(paddle.getY() == 200);
   }
+
+  SECTION("Move down"){
+    paddle.resetDirection();
+    paddle.incrementDirection();
+    paddle.move(5);
+
+    REQUIRE(paddle.getY() == 300);
+  }
+
+  SECTION("Move up beyond bounds"){
+    paddle.resetDirection();
+    paddle.decrementDirection();
+    paddle.move(50);
+
+    REQUIRE(paddle.getY() == 25);
+  }
+
+  SECTION("Move down beyond bounds"){
+    paddle.resetDirection();
+    paddle.incrementDirection();
+    paddle.move(50);
+
+    REQUIRE(paddle.getY() == 475);
+  }
+  
 }

@@ -12,8 +12,8 @@
 #define GAME_H
 
 #include <SDL2/SDL.h>
-#include <vector>
 #include "gamepiece.h"
+#include "mobilepiece.h"
 #include "ball.h"
 #include "paddle.h"
 #include "wall.h"
@@ -44,16 +44,32 @@ class Game{
   const int winWidth{1024};
   const int winHeight{768};
   const int flags{0};
-  const int thickness{15};
+  
+  const int ballSize{10};
   const int ballMotion{1};
-  const int paddleMargin{15};
+  
+  const int wallThickness{15};
+  
+  const int paddleThickness{15};
+  const int paddleMargin{25};
   const int paddleHeight{150};
   const int paddleMotion{1};
 
   const int frameMs{16}; // 60FPS = 1 frame per 16ms
   const double maxDelta{0.05};
-  const double pixelsPerSecond{300.0}; // pixels per second
 
+  // Game Boundaries
+  const int topBoundaryY{wallThickness};
+  const int bottomBoundaryY{winHeight - wallThickness};
+  const int leftBoundaryX{wallThickness};
+  const int rightBoundaryX{winWidth - wallThickness};
+
+  // Initial Velocities
+  const double paddleXVelocity{0.0};
+  const double paddleYVelocity{300.0};
+  const double ballXVelocity{-200.0};
+  const double ballYVelocity{235.0};
+  
   bool mIsRunning; // Game should continue to run
   int mTicksCount; // for counting delta time
 
@@ -75,15 +91,6 @@ class Game{
 
   SDL_Window* mWindow; // Window created by SDL 
   SDL_Renderer* mRenderer; // SDL Renderer
-
-  struct Vector2{
-    double x;
-    double y;
-  };
-
-  // Vectors for positions of ball and paddles
-  Vector2 mBallPos, mPaddle1Pos, mPaddle2Pos;
- 
 };
 
 #endif

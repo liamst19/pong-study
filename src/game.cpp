@@ -8,10 +8,11 @@
  * 
  */
 
-#include <vector>
 #include <SDL2/SDL.h>
+#include <cstdlib>
 #include "game.h"
 #include "gamepiece.h"
+#include "mobilepiece.h"
 #include "wall.h"
 #include "ball.h"
 #include "paddle.h"
@@ -143,15 +144,57 @@ void Game::updateGame(){
     deltaTime = maxDelta;
   }
 
-  // calculate pixels from delta
-  int pixels = static_cast<int>(deltaTime * pixelsPerSecond);
-
   mTicksCount = SDL_GetTicks(); // update tick counts for next frame
 
   // move paddles
-  mLPaddle.move(pixels);
-  mRPaddle.move(pixels);
+  mLPaddle.move(deltaTime);
+  mRPaddle.move(deltaTime);
   
+  // check paddle for wall hits here?
+  
+  // move ball
+  mBall.move(deltaTime);
+
+  // Check for ball collisions here, since collisions are events
+  // that are external to objects.
+  
+  // Flip y-direction if ball collides or exceeds
+  // top or bottom edges.
+  if((mBall.getYTop() <= topBoundaryY && mBall.getYVelocity() < 0.0)
+  || (mBall.getYBottom() >= bottomBoundaryY && mBall.getYVelocity() > 0.0)){
+    mBall.changeYDirection();
+  }
+
+  // When ball hits the side walls
+  if(mBall.isAtLeft()){
+    mBall.updatePosition(winWidth/2, winHeight/2);
+    mBall.changeXDirection();
+  }
+  else if(mBall.isAtRight()){
+    mBall.updatePosition(winWidth/2, winHeight/2);
+    mBall.changeXDirection();
+  }
+
+  // Flip x-direction if ball collides with paddle.
+  double diff{0};
+
+  // Left Paddle Collision
+  diff = std::abs(mBall.getY() - mLPaddle.getY());
+  if(diff <= mLPaddle.getHeight()/2.0
+     && mLPaddle.isRectColliding(mBall.getXLeft(), mBall.getXRight(),
+                                 mBall.getYTop(), mBall.getYBottom())
+     && mBall.getXVelocity() < 0){
+       mBall.changeXDirection(); 
+     }
+
+  // Right Paddle Collision
+  diff = std::abs(mBall.getY() - mRPaddle.getY());
+  if(diff <= mRPaddle.getHeight()/2.0
+     && mRPaddle.isRectColliding(mBall.getXLeft(), mBall.getXRight(),
+                                 mBall.getYTop(), mBall.getYBottom())
+     && mBall.getXVelocity() > 0){
+       mBall.changeXDirection(); 
+     }
 }
 
 /*
@@ -181,45 +224,53 @@ void Game::generateOutput(){
  */
 void Game::generateGamePieces(){
   SDL_Log("Generating Game Pieces");
-
-
-  int topEdge = thickness;
-  int bottomEdge = winHeight - thickness;
   
-   mBall.update(winWidth/2,
+   mBall.update(ballSize,
+                ballSize,
+                winWidth/2,
                 winHeight/2,
-                thickness,
-                thickness);
+                ballXVelocity,
+                ballYVelocity);
+   mBall.setBoundary(topBoundaryY, bottomBoundaryY, leftBoundaryX, rightBoundaryX);
    
-   mRPaddle.update(winWidth - thickness*3,
-                   static_cast<int>((winHeight-paddleHeight)/2),
-                   thickness,
-                   paddleHeight);
-   mRPaddle.setEdges(topEdge, bottomEdge);
+   mLPaddle.update(paddleThickness,
+                   paddleHeight,
+                   wallThickness + paddleMargin,
+                   winHeight/2,
+                   paddleXVelocity,
+                   paddleYVelocity);
    
-   mLPaddle.update(thickness*2,
-                   static_cast<int>((winHeight-paddleHeight)/2),
-                   thickness,
-                   paddleHeight);
-   mLPaddle.setEdges(topEdge, bottomEdge);
+   mLPaddle.setBoundary(topBoundaryY, bottomBoundaryY, leftBoundaryX, rightBoundaryX);
+   
+   mRPaddle.update(paddleThickness,
+                   paddleHeight,
+                   winWidth - wallThickness - paddleMargin,
+                   winHeight/2,
+                   paddleXVelocity,
+                   paddleYVelocity);
+   
+   mRPaddle.setBoundary(topBoundaryY, bottomBoundaryY, leftBoundaryX, rightBoundaryX);
    
    // Walls
-   mTopWall.update(0,
-                   0,
-                   winWidth,
-                   thickness);
-   mBottomWall.update(0,
-                      winHeight - thickness,
-                      winWidth,
-                      thickness);
-   mRightWall.update(winWidth - thickness,
-                     0,
-                     thickness,
-                     winHeight);
-   mLeftWall.update(0,
-                    0,
-                    thickness,
-                    winHeight);
+   mTopWall.update(winWidth,
+                   wallThickness,
+                   winWidth/2,
+                   wallThickness/2);
+   
+   mBottomWall.update(winWidth,
+                      wallThickness,
+                      winWidth/2,
+                      winHeight - wallThickness/2);
+   
+   mRightWall.update(wallThickness,
+                     winHeight,
+                     winWidth - wallThickness/2,
+                     winHeight/2);
+   
+   mLeftWall.update(wallThickness,
+                    winHeight,
+                    wallThickness/2,
+                    winHeight/2);
 
 }
 
@@ -249,8 +300,8 @@ void Game::destroyGamePieces(){
  *
  */
 void Game::renderGamePiece(GamePiece* g){
-  SDL_Rect rect{g->getX(),
-                g->getY(),
+  SDL_Rect rect{g->getXLeft(),
+                g->getYTop(),
                 g->getWidth(),
                 g->getHeight()};
   SDL_RenderFillRect(mRenderer, &rect);

@@ -16,11 +16,6 @@ class Wall: public GamePiece{
 
   Wall(){};
   ~Wall(){};
-  
-  int getX();
-  int getY();
-  int getWidth();
-  int getHeight();
 };
 
 #endif

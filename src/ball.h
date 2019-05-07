@@ -7,20 +7,17 @@
 #ifndef BALL_H
 #define BALL_H
 
-#include "gamepiece.h"
+#include "mobilepiece.h"
 
-class Ball: public GamePiece{
+class Ball: public MobilePiece{
  public:
   
   Ball(){};
  ~Ball(){};
 
-  int getX();
-  int getY();
-  int getWidth();
-  int getHeight();
+  // void move(double deltaTime);
 
-  void move(int x, int y);
+private:
 };
 
 #endif

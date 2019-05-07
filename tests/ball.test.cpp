@@ -1,40 +1,31 @@
 #include <catch2/catch.hpp>
 #include "../src/ball.h"
 
-TEST_CASE("Create ball object"){
+TEST_CASE("Ball"){
   Ball ball;
+  ball.update(10, 10, 250, 250, 10, 10);
+  ball.setBoundary(0, 500, 0, 500);
 
-  REQUIRE(ball.getX() == 0);
-  REQUIRE(ball.getY() == 0);
-  REQUIRE(ball.getWidth() == 0);
-  REQUIRE(ball.getHeight() == 0);
+  SECTION("Move 1 second"){
+    ball.move(1);
 
-  SECTION("Update ball"){
-    ball.update(100, 100, 50, 50);
+    REQUIRE(ball.getX() == 260);
+    REQUIRE(ball.getY() == 260);
+  }
 
-    REQUIRE(ball.getX() == 75);
-    REQUIRE(ball.getY() == 75);
-    REQUIRE(ball.getWidth() == 50);
-    REQUIRE(ball.getHeight() == 50);
-    
-    SECTION("Update Position"){
-      ball.updatePosition(600, 800);
+  SECTION("change x-direction"){
+    ball.updateXPosition(450);
+    ball.updateVelocity(10, 0);
+    ball.changeXDirection();
 
-      REQUIRE(ball.getX() == 575);
-      REQUIRE(ball.getY() == 775);
-    }
-  
-    SECTION("Update x"){
-      ball.updateX(300);
+    REQUIRE(ball.getXVelocity() == -10.0);
+  }
 
-      REQUIRE(ball.getX() == 275);
-    }
+  SECTION("change y-direction"){
+    ball.updateYPosition(50);
+    ball.updateVelocity(0, 10);
+    ball.changeYDirection();
 
-    SECTION("Update y"){
-      ball.updateY(300);
-
-      REQUIRE(ball.getY() == 275);
-    }
-
+    REQUIRE(ball.getYVelocity() == -10.0);
   }
 }

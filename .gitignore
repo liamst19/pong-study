@@ -1,6 +1,7 @@
 
 bin/
 build/
+catch2test/
 
 # Prerequisites
 *.d
